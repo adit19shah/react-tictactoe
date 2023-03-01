@@ -1,16 +1,17 @@
 import Square from "./Square";
 
 export default function Board({ xIsNext, squares, onPlay }) {
+  const winner = calculateWinner(squares);
+  const isDraw = checkDraw(squares);
   function handleClick(pos) {
-    if (squares[pos] || calculateWinner(squares)) return;
+    if (squares[pos] || winner || isDraw) return;
     const nextSquares = squares.slice();
     nextSquares[pos] = xIsNext ? "X" : "O";
     onPlay(nextSquares);
   }
-
-  const winner = calculateWinner(squares);
   let status;
   if (winner) status = "Winner: " + winner;
+  else if (isDraw) status = "Game ended in a draw...";
   else status = "Next Player: " + (xIsNext ? "X" : "O");
 
   return (
@@ -56,6 +57,12 @@ export default function Board({ xIsNext, squares, onPlay }) {
       })()}
     </div>
   );
+}
+function checkDraw(squares) {
+  for (let i = 0; i < 9; i++) {
+    if (!squares[i]) return false;
+  }
+  return true;
 }
 function calculateWinner(squares) {
   const lines = [
