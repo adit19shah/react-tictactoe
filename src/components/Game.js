@@ -8,7 +8,7 @@ export default function Game() {
   const [currentMove, setCurrentMove] = useState(0);
   const currentSquares = history[currentMove];
   const xIsNext = (currentMove & 1) === 0;
-  const [checked, setChecked] = useState(true);         //For toggle switch
+  const [checked, setChecked] = useState(true); //For toggle switch
 
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
@@ -21,17 +21,15 @@ export default function Game() {
   }
 
   function ToggleSwitch() {
-  
     const handleChange = (val) => {
       setChecked(val);
-      console.log("Clicked");
+      //console.log("Clicked");
     };
-  
+
     return (
       <div className="app" style={{ textAlign: "center" }}>
         <h4>Toggle Switch to toggle the order</h4>
         <ReactSwitch checked={checked} onChange={handleChange} />
-        
       </div>
     );
   }
@@ -55,14 +53,10 @@ export default function Game() {
       </div>
       <div className="game-info">
         <ToggleSwitch />
-        {
-            function(){
-                if(checked)
-                    return <ol>{moves}</ol>
-                else
-                    return <ol>{moves.reverse()}</ol>
-            }()
-        }
+        {(function () {
+          if (checked) return <ol>{moves}</ol>;
+          else return <ol>{moves.reverse()}</ol>;
+        })()}
       </div>
     </div>
   );
