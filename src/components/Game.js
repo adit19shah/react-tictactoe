@@ -21,8 +21,8 @@ export default function Game() {
   }
 
   function ToggleSwitch() {
-    const handleChange = (val) => {
-      setChecked(val);
+    const handleChange = (isToggled) => {
+      setChecked(isToggled);
       //console.log("Clicked");
     };
 
@@ -53,10 +53,11 @@ export default function Game() {
       </div>
       <div className="game-info">
         <ToggleSwitch />
-        {(function () {
+        <ol>{(checked)?(moves):(moves.reverse())}</ol>
+        {/*{(function () {
           if (checked) return <ol>{moves}</ol>;
           else return <ol>{moves.reverse()}</ol>;
-        })()}
+        })()}*/}
       </div>
     </div>
   );

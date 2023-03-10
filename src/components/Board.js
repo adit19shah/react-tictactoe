@@ -1,5 +1,30 @@
 import Square from "./Square";
 
+//Keeping two loops in the same function since that was requirement of the challenge
+const GenerateRows = (function ({squares,handleClick}) {
+  const rows = [];
+  for (let i = 0; i < 3; i++) {
+    rows.push(
+      <div className="board-row">
+        {(function () {
+          const cols = [];
+          for (let j = 0; j < 3; j++) {
+            cols.push(
+              <Square
+                value={squares[3 * i + j]}
+                onSquareClick={() => handleClick(3 * i + j)}
+                key={3 * i + j}
+              />
+            );
+          }
+          return <tbody>{cols}</tbody>;
+        })()}
+      </div>
+    );
+  }
+  return <tbody>{rows}</tbody>;
+})
+
 export default function Board({ xIsNext, squares, onPlay }) {
   const winner = calculateWinner(squares);
   const isDraw = checkDraw(squares);
@@ -32,29 +57,7 @@ export default function Board({ xIsNext, squares, onPlay }) {
           <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
           <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
         </div>*/}
-      {(function () {
-        const rows = [];
-        for (let i = 0; i < 3; i++) {
-          rows.push(
-            <div className="board-row">
-              {(function () {
-                const cols = [];
-                for (let j = 0; j < 3; j++) {
-                  cols.push(
-                    <Square
-                      value={squares[3 * i + j]}
-                      onSquareClick={() => handleClick(3 * i + j)}
-                      key={3 * i + j}
-                    />
-                  );
-                }
-                return <tbody>{cols}</tbody>;
-              })()}
-            </div>
-          );
-        }
-        return <tbody>{rows}</tbody>;
-      })()}
+      <GenerateRows squares={squares} handleClick={handleClick}/>
     </div>
   );
 }
@@ -75,10 +78,30 @@ function calculateWinner(squares) {
     [0, 4, 8],
     [2, 4, 6],
   ];
+
+  { //Not working as expected 
+    
+    /* const winCheck = (line) => {
+    const [a,b,c] = line;
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c])
+      return squares[a];
+  }
+
+  const isWinState = lines.some(winCheck);
+  if(isWinState) return isWinState; */}
+  
+  {//Not Working as expected
+
+    /*lines.map((line) => {
+    const [a,b,c] = line;
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c])
+      return squares[a];
+  }); */}
+
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c])
       return squares[a];
   }
-  return null;
+  return null; 
 }
